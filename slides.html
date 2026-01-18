@@ -15,80 +15,147 @@
       padding: 0;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 0 24px;
+    /* Header (same text as before, just styled as a header section) */
+    header {
+      background: white;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 28px 24px;
       text-align: center;
     }
 
-    h1 {
+    header h1 {
       font-size: 2.2rem;
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.5rem 0;
     }
 
-    h2 {
+    header h2 {
       font-size: 1.25rem;
       font-weight: 400;
       color: #555;
-      margin-bottom: 2rem;
+      margin: 0;
     }
 
-    .button-group button {
-      padding: 12px 20px;
+    /* Main layout */
+    .layout {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 24px 40px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* Left menu */
+    .sidebar {
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 14px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .sidebar h3 {
+      margin: 6px 0 12px;
+      font-size: 1rem;
+      color: #444;
+      text-align: left;
+    }
+
+    .menu-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 12px;
       font-size: 1rem;
       background-color: #0366d6;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      margin: 0 8px;
+      margin-bottom: 10px;
     }
 
-    .button-group button:hover {
+    .menu-btn:hover {
       background-color: #024ea2;
     }
 
-    .pdf-container {
-      margin-top: 30px;
-      display: none;
+    .menu-btn.active {
+      background-color: #023b7a;
+    }
+
+    /* Viewer area */
+    .viewer {
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .viewer-title {
+      text-align: left;
+      margin: 6px 0 12px;
+      font-size: 1rem;
+      color: #444;
     }
 
     iframe {
       width: 100%;
-      height: 800px;
+      height: 80vh;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+      iframe {
+        height: 70vh;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <header>
     <h1>Rachel Ramsey IDC 6940</h1>
     <h2>Using Machine Learning Techniques to Project Occupational Employment Data</h2>
+  </header>
 
-    <div class="button-group">
-      <button onclick="togglePDF('week1')">View Week 1 Homework</button>
-      <button onclick="togglePDF('week2')">View Week 2 Literature Review</button>
-    </div>
+  <main class="layout">
+    <aside class="sidebar">
+      <h3>Assignments</h3>
+      <button class="menu-btn active" onclick="loadPDF('Week1-HW.pdf', this)">
+        Week 1 Homework
+      </button>
+      <button class="menu-btn" onclick="loadPDF('Week2-Literature_Review.pdf', this)">
+        Week 2 Literature Review
+      </button>
+    </aside>
 
-    <div class="pdf-container" id="week1">
-      <iframe src="Week1-HW.pdf"></iframe>
-    </div>
-
-    <div class="pdf-container" id="week2">
-      <iframe src="Week2-Literature_Review.pdf"></iframe>
-    </div>
-  </div>
+    <section class="viewer">
+      <div class="viewer-title" id="viewerTitle">Week 1 Homework</div>
+      <iframe id="pdfFrame" src="Week1-HW.pdf" title="PDF Viewer"></iframe>
+    </section>
+  </main>
 
   <script>
-    function togglePDF(id) {
-      const viewer = document.getElementById(id);
-      viewer.style.display =
-        viewer.style.display === "none" || viewer.style.display === ""
-          ? "block"
-          : "none";
+    function loadPDF(fileName, buttonEl) {
+      // Update iframe
+      const frame = document.getElementById("pdfFrame");
+      frame.src = fileName;
+
+      // Update title based on button text
+      document.getElementById("viewerTitle").textContent = buttonEl.textContent.trim();
+
+      // Update active button styling
+      document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+      buttonEl.classList.add("active");
     }
   </script>
 </body>
