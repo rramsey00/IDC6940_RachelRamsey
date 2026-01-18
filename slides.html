@@ -34,7 +34,7 @@
       margin-bottom: 2rem;
     }
 
-    button {
+    .button-group button {
       padding: 12px 20px;
       font-size: 1rem;
       background-color: #0366d6;
@@ -42,9 +42,10 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      margin: 0 8px;
     }
 
-    button:hover {
+    .button-group button:hover {
       background-color: #024ea2;
     }
 
@@ -67,16 +68,23 @@
     <h1>Rachel Ramsey IDC 6940</h1>
     <h2>Using Machine Learning Techniques to Project Occupational Employment Data</h2>
 
-    <button onclick="togglePDF()">View Week 1 Homework</button>
+    <div class="button-group">
+      <button onclick="togglePDF('week1')">View Week 1 Homework</button>
+      <button onclick="togglePDF('week2')">View Week 2 Literature Review</button>
+    </div>
 
-    <div class="pdf-container" id="pdfViewer">
+    <div class="pdf-container" id="week1">
       <iframe src="Week1-HW.pdf"></iframe>
+    </div>
+
+    <div class="pdf-container" id="week2">
+      <iframe src="Week2-Literature_Review.pdf"></iframe>
     </div>
   </div>
 
   <script>
-    function togglePDF() {
-      const viewer = document.getElementById("pdfViewer");
+    function togglePDF(id) {
+      const viewer = document.getElementById(id);
       viewer.style.display =
         viewer.style.display === "none" || viewer.style.display === ""
           ? "block"
@@ -85,4 +93,3 @@
   </script>
 </body>
 </html>
-
