@@ -1,0 +1,124 @@
+<html>
+
+<head>
+<title>Week 2 Literature Review</title>
+</head>
+
+<body>
+
+<h1>Rachel Ramsey IDC 6940</h1>
+<h2>Week2 - Literature Review</h2>
+
+
+<p>• Background/Motivation:<br>
+– Describe the context in which the research was conducted.<br>
+  <span style="color: red;"Literature Review 2.1<br>
+    - OLS is the current standard in macroeconomic forecasting.<br>
+   - SGDRegressor has been a part of recent attempts to make reports more current and account for changing<br> circumstances as well as computational costs.<br> </span>
+
+– What problem or gap in the existing literature does the paper aim to address?<br>
+<span style="color: red;" <br>
+The author compares linear, ensemble and <br>
+deep-learning approaches on the same dataset. This addresses the <br>
+difference in accuracy and outcomes when using different methods.</span> <br>
+
+– Discuss the significance of the research question and why it is important.<br>
+   <span style="color: red;"- Introduction 1.2<br>
+      - Predicting unemployment data can give the public a more current picture of the economy because current<br> reports lag by at least a month. It also allows for a simulation option by changing input variables to match policy<br> options. <br> </span>
+      <br>
+• Methods Used:<br>
+– Summarize the methodologies employed by the authors.<br>
+ <span style="color: red;"<br>
+ The authors build a machine learning process where they take BLS historical unemployment data, preprocess it and <br> run it through a variety of algorithms to determine the most accurate forecast. The authors use linear, non-linear,<br> and deep learning algorithms to cover more complexity and provide a wide range of results for a good <br> comparison. </span> <br>
+– Explain how these methods are suited to address the research question.<br>
+<span style="color: red;"<br>
+The research question for this paper focuses on which algorithm produces the most accurate prediction. <br>
+These methods address this focus by using a variety of different types of algorithms in order to cover any <br> complexities in the data like non-linear relationships or high-dimensionality. </span> <br>
+– Discuss any innovative approaches or techniques that are particularly
+noteworthy.<br>
+<span style="color: red;" <br>
+The method of this paper being machine learning techniques in economic data is innovative because <br>
+the field of economics has a subfield of econometrics which is used to forecast. Econometrics has a focus of <br> understanding what factors contribute to an outcome while machine learning has the goal of predicting without as <br> much concern for how
+or what factors contributed to the outcome. <br>
+I find this approach of using machine learning to focus on accuracy of the prediction <br>
+rather than causal effects to be noteworthy.</span> <br>
+
+<br>
+• Significance of the Work:<br>
+– Highlight the key findings and contributions of the paper.<br>
+<span style="color: red;"<br>
+The paper compared seven algorithms and six different scalers. In terms of the algorithms, tree based ensembles <br> outperformed all other algorithms. The author states that the Random Forest algorithm had the lowest <br>
+Mean Squared Error (MSE) and Mean Absolute Percentage Error (MAPE) and that this can be traced to its ability to<br> handle complexities such as nonlinear interactions. <br>
+MaxAbsScaler was determined to be the best scaler because it provided <br>
+the best preprocessing for all models among tested Scalers. <br>
+</span>
+– Explain why the results are important within the broader context of
+the field.<br>
+<span style="color: red;"<br>
+These results are important for the field of economics because they give guidance <br>
+as to where the field could go in the future. The practice of forecasting <br>
+in economics has been a lagged process and the ability to release real-time <br>
+forecasts could mean a lot for the future of economic policies and personal <br>
+economic choices. <br>
+
+</span> 
+– Discuss the implications of the findings for future research or practice.<br>
+<span style="color: red;" <br>
+The future of economic policy and personal economic choices can be changed by <br>
+real-time forecasting. The 2008 financial crisis in the US could have been less <br>
+detrimental to many individuals and families across the country if there <br>
+were more accurate information early enough to make better decisions or <br>
+avoid making mistakes. The same could be said for economic policies. <br>
+The Fed could be making more informed choices as well as presidential cabinets <br>
+when it comes to the needs of the country's economy.<br>
+</span>
+<br>
+• Connection to Other Work:<br>
+– Relate the paper to other relevant studies.<br>
+– How does this paper build on or differ from previous work?<br>
+<span style="color: red;"<br>
+The author mentions several papers where work had been done using <br>
+the features used in this paper. The author uses these examples as <br>
+support for their use of them. The author also mentions an example where <br>
+each model was used in economics. This paper builds on these examples by comparing <br>
+all the models.
+</span><br>
+– Identify any references to seminal works or influential papers cited
+by the authors.<br>
+<span style="color: red;" <br>
+The author refers to several paper such as:<br>
+- Stock & Watson (2001): OLS in economic analysis<br>
+- Breiman (2001): Random Forest<br>
+- Drucker et al. (1997): SVR<br>
+- Hochreiter & Schmidhuber (1997): LSTM Network<br>
+The following were used to highlight the features used in this paper:<br>
+- Liu & Zhang (2018)<br>
+- Chauvet & Potter (2013)<br>
+</span>
+<br>
+• Relevance to Capstone Project:<br>
+– Discuss how the content of the paper might be relevant to your own
+capstone project.<br>
+<span style="color: red;" <br>
+This paper uses some of the same data sources I plan to use such as BLS data. <br>
+The author is also using machine learning in the economics field which is the goal <br>
+of my paper.
+</span> <br>
+– Identify any specific methods, theories, or findings that you might
+incorporate into your project.<br>
+<span style="color: red;" <br>
+I believe it may be beneficial to use the findings from this paper in my <br>
+project. Using the model and scaler that were most successful in this <br>
+paper may lead me down a successful path in terms of the goal of my project.
+</span> <br>
+– Highlight any potential areas where your capstone could expand upon
+or diverge from the paper’s findings.<br>
+<span style="color: red;"<br>
+I believe my paper may need to diverge from the findings of this paper <br>
+because the model that was most successful was deemed successful when <br>
+using unemployment data and I plan to use occupational data.
+</span>
+</p>
+
+</body>
+</html>
