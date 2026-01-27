@@ -1,0 +1,143 @@
+<html>
+
+<head>
+<title>Week 2 Literature Review</title>
+</head>
+
+<body>
+
+<h1>Rachel Ramsey IDC 6940</h1>
+<h2>Week3 - Literature Review</h2>
+
+
+<p>• Background/Motivation:<br>
+– Describe the context in which the research was conducted.<br>
+  <span style="color: red;"Literature Review 2.1<br>
+  This research was conducted in the context of wage projections being valuable<br>
+  in the job market but being difficult to do precisely. The author emphasizes that<br>
+  machine learning is a method that may make wage predictions more accurate.<br>
+    <br> </span>
+
+– What problem or gap in the existing literature does the paper aim to address?<br>
+<span style="color: red;" <br>
+The existing literature builds machine learning models and compares models to determine<br>
+which has the best accuracy. This paper goes beyond that and implements or deploys their<br>
+models into an interactive tool where users can enter their information and actually see what<br>
+level their salary or wages should be at given their variables. This takes the paper from just<br>
+a theoretical study to a real life solution.<br>
+</span> <br>
+
+– Discuss the significance of the research question and why it is important.<br>
+   <span style="color: red;"- Introduction 1.2<br>
+   Salary prediction is significant because it allows people to make informed decisions or appropriate<br> negotiations when it comes to accepting job offers. Information on salaries is not easily accessible, so creating<br> an accurate way to calculate salaries based on user features would help tremendously in providing fair wages.<br> Companies can also use this information as well. By creating an easily accessible standard to compare to,<br> companies can assess the market price of job roles and determine if hiring additional help is affordable or not.<br>
+      <br> </span>
+      <br>
+• Methods Used:<br>
+– Summarize the methodologies employed by the authors.<br>
+ <span style="color: red;"<br>
+ This paper uses web scraping techniques to collect 6,704 observations from the web,<br>
+ and trained supervised machine learning models on this dataset that included multiple<br>
+ variables for each observation such as age, gender, education, job role, experience, and<br>
+ salary as the target. The supervised machine learning algorithms used were linear regression,<br>
+ polynomial regression, support vector regression, decision trees, random forests, gradient<br>
+ boosting, k-nearest neighbors, and neural multilayer perceptron.<br>
+  </span> <br>
+  <br>
+– Explain how these methods are suited to address the research question.<br>
+<span style="color: red;"<br>
+What made these methods suitable was the exploratory data analysis that <br>
+used heatmaps and line plots that proved strong correlations between salary<br>
+and some of the variables. This made regression-based machine learning techniques<br>
+appropriate for this dataset.<br>
+ </span> <br>
+ <br>
+– Discuss any innovative approaches or techniques that are particularly
+noteworthy.<br>
+<span style="color: red;" <br>
+This paper used standard machine learning techniques, but it was<br>
+innovative in that it applied the findings from these techniques to<br>
+an interactive web application.<br>
+</span> <br>
+
+<br>
+• Significance of the Work:<br>
+– Highlight the key findings and contributions of the paper.<br>
+<span style="color: red;"<br>
+The random forest model had the highest accuracy, with 91.9%, followed by KNN then Decision trees. Linear<br> Regression had the lowest accuracy of 65.2%, followed by Polynomial regression and Neural Networks. According to<br> the EDA, the most important variables were age and years of experience, having the most correlation with<br> salary; while gender and job title have the weakest correlation with salary.<br>
+<br>
+</span>
+– Explain why the results are important within the broader context of
+the field.<br>
+<span style="color: red;"<br>
+The results are important because they show which machine learning models are<br>
+the most effective at predicting salaries, which provides a solid foundation for<br>
+stakeholders in the labor market to make decisions based on a standard salary level.<br>
+With the interactive web application, job seekers can now engage in accurate salary<br>
+negotiations and employers can now keep up with salary expectations for different employees<br>
+based on labor cost in the market.<br>
+ <br>
+
+</span> 
+– Discuss the implications of the findings for future research or practice.<br>
+<span style="color: red;" <br>
+These findings can create an additional tool for career guidance. Users can plan ahead<br>
+by providing the tool their information and what education level they would want to attain<br>
+and have the model determine what their salary would be. This, along with creating a<br>
+standard salary range for users to fairly negotiate with employers are possible implications<br>
+of these findings. Future research could include adding more features like location and<br>
+industry to the models so users can have more accurate information based on their situation.<br>
+<br>
+</span>
+<br>
+• Connection to Other Work:<br>
+– Relate the paper to other relevant studies.<br>
+<span style="color: red;"<br>
+This paper builds on earlier salary prediction research that applied supervised machine learning<br>
+algorithms. All but one of the other papers mentioned found that random forest was the most accurate<br>
+model in their analysis. This validates the strength of random forest for salary prediction compared<br>
+to other supervised models.<br>
+</span><br>
+<br>
+– How does this paper build on or differ from previous work?<br>
+<span style="color: red;"<br>
+This paper builds on previous work by using pretty much the same core models used in previous papers.<br>
+It differs in its data collection method because it used web scraping techniques to pull data from<br>
+linkedin for its dataset. It also attached an interactive tool for users to use the model to predict<br>
+their salary by putting in their information.<br>
+</span><br>
+– Identify any references to seminal works or influential papers cited
+by the authors.<br>
+<span style="color: red;" <br>
+The paper references several influential papers:<br>
+Bangdiwala (2018) on linear regression as a statistical foundation for prediction models.<br>
+Belgiu & Drăguţ (Random Forest in remote sensing) for justification of Random Forest’s strength in handling<br> complex, high-dimensional data.<br>
+Shukla & Dave (2019) and Mane & Joshi (2020) on comparative machine learning approaches for employee salary<br> prediction.<br>
+<br>
+</span>
+<br>
+• Relevance to Capstone Project:<br>
+– Discuss how the content of the paper might be relevant to your own
+capstone project.<br>
+<span style="color: red;" <br>
+This research is using methodologies I intend to test out and is using<br>
+them on similar variables (occupational variables) as I am also considering doing.<br>
+
+</span> <br>
+– Identify any specific methods, theories, or findings that you might
+incorporate into your project.<br>
+<span style="color: red;" <br>
+As with the last paper I reviewed, the research found that Random Forest<br>
+was the most accurate model. This reinforces my belief that this would be a<br>
+great place to start in my project.<br>
+</span> <br>
+– Highlight any potential areas where your capstone could expand upon
+or diverge from the paper’s findings.<br>
+<span style="color: red;"<br>
+My project will involve more features. This paper was limited in features because<br>
+of the needs of the web application but my project will be able to handle more features<br>
+such as location, industry, etc.<br>
+</span>
+</p>
+
+</body>
+</html>
