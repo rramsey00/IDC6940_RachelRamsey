@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<title>Week 4&5 Report</title>
+</head>
+
+<body>
+
+<h1>Rachel Ramsey IDC 6940</h1>
+<h2>Week4&5 - Report</h2>
+
+<p>
+Problem definition: what you are predicting/estimating/explaining and <br>
+what the inputs/outputs are.<br>
+<span style="color: red;"<br>
+I am trying to predict occupational employment in 2024. The inputs I used<br>
+in this version of the project are minimal (to not overload the script)<br>
+but they include Mean, Median, Entry, and Experienced wages lagged by one year.<br>
+I would like to restructure the data in the future so that previous years employment can<br>
+be predictors and I would like to add technology skills and work context from O*Net Online.
+<br></span>
+<br>
+Data description (initial): what data you plan to use, key variables/features, and expected<br> sample size.<br>
+<span style="color: red;" 
+<br>
+I plan to use Occupational Employment and Wage Statistics from the Bureau of Labor<br> Statistics. I will be using Florida statewide data for every occupation and using the<br> industry totals. I will be collecting the employment, hourly and annual mean wages, and the<br> hourly and annual median wages. I expect to have the entire data set available to me and to use it.<br>
+<br> </span>
+Preprocessing plan: cleaning steps, missing data handling, encoding, normalization/scaling,<br> train/test split strategy, etc.<br>
+<span style="color: red;"
+<br>
+Not much preprocessing has been done at this point but I plan to add more features in the<br> future that will need more processing. As of now, the preprocessing done includes changing<br> numeric features to numeric data types, removing NAs, and lagging wages to the previous<br> year.
+Modeling/analysis plan: algorithms/methods you will use and why they fit the problem.<br>
+I plan to use a few models. While I expect Random Forest or XGBoost to be the most successful<br> because they capture non linear relationships and based on the literature review, they<br> are able to account for situational outliers, I also used<br>
+<br>
+Linear Regression<br>
+Ridge and Lasso Regression<br>
+<br></span>
+Evaluation plan: metrics (e.g., accuracy, RMSE, AUC), baselines, and how you will validate<br> results.
+<br><span style="color: red;"<br>
+I use the cross validation method to validate the training data set<br>
+Metrics used to validate results include<br>
+Root Mean Squared Error (RMSE)<br>
+Mean Absolute Error (MAE)<br>
+R-Squared (RSQ)<br>
+<br></span>
+Provide the dataset source (paper link, repository link, or dataset citation).<br>
+<span style="color: red;"<br>
+https://www.floridajobs.org/workforce-statistics/data-center/statistical-programs/occupational-employment-statistics-and-wages<br>
+<br></span>
+<br>
+Option B: test your code on your chosen dataset and report preliminary<br>
+results (even if the paper you chose does not provide a direct benchmark).<br>
+Your report must include:<br>
+what you implemented (brief description of the pipeline),
+<br><span style="color: red;"<br>
+After reading in the data, I lagged the wage features to the previous year. Then I split<br> the data so that the training data set includes 2015-2023 data and the testing data set<br> includes only 2024 data. Then I used cross validation to resample the training data. Next, I<br> created the models and tuned their parameters and then fit all the models. Next, I<br> evaluate the models, determine the best one, and use it on the testing data. <br>
+<br></span>
+what you tested (which dataset, which subset, which variables),
+<br><span style="color: red;"<br>
+I used the dataset combining all years (2015-2024) and lagging the wage variables. The<br> outcome variable is Employment and the predictors are Mean, Median, Experienced, and Entry<br> Wages lagged. I would like to add to the features, but I need to find the data for these<br> features (Educational requirements (BLS), Technology Skills (O*Net), and Work Context(O*Net))<br>
+what worked and what did not (bugs, limitations, unexpected issues),<br>
+On the whole, the script worked. The only unexpected issues were that it took a long time<br> to run and there were some packages I wanted to use that I needed to edit my R Profile to <br>be able to install. Random Forest took too long to set up so I had to eliminate it but I<br> think XGBoost will be a good replacement.<br>
+<br></span>
+<br>
+preliminary outputs (tables/figures/metrics).<br>
+<span style="color: red;"<br>
+Based on the preliminary outputs, I selected XGBoost to use as my model.<br> I also will need to add several features because the R-Squared (0.0139) is low. <br>
+
+
+</p>
+
+</body>
+</html>
