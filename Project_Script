@@ -1,0 +1,184 @@
+library(tidyverse)
+library(tidymodels)
+library(glmnet)
+library(ranger)
+library(future)
+library(progress)
+library(xgboost)
+
+
+df <- openxlsx::read.xlsx("/Users/rachelramsey/Desktop/important/school/IDC 6940/OEWS_10 years.xlsx")
+
+set.seed(123)
+
+
+# ---- 1) Keep needed columns + types ----
+df2 <- df %>%
+  select(Code, Title, Employment, Mean, Median, Entry, Exp, Year) %>%
+  mutate(
+    Code = factor(Code),
+    Year = as.integer(Year),
+    Employment = as.numeric(Employment),
+    Mean   = as.numeric(Mean),
+    Median = as.numeric(Median),
+    Entry  = as.numeric(Entry),
+    Exp    = as.numeric(Exp)
+  ) %>%
+  filter(!is.na(Employment), !is.na(Year), !is.na(Code))
+
+# ---- 2) Create lagged wage predictors by occupation (Code) ----
+# IMPORTANT: compute lags BEFORE splitting, but lags only use prior years within Code.
+df_lag <- df2 %>%
+  arrange(Code, Year) %>%
+  group_by(Code) %>%
+  mutate(
+    Mean_lag1   = lag(Mean, 1),
+    Median_lag1 = lag(Median, 1),
+    Entry_lag1  = lag(Entry, 1),
+    Exp_lag1    = lag(Exp, 1)
+  ) %>%
+  ungroup()
+
+# ---- 3) Time split (NO randomness) ----
+train_df <- df_lag %>% filter(Year >= 2015, Year <= 2023)
+test_df  <- df_lag %>% filter(Year == 2024)
+
+# If an occupation is new in 2024 (no 2023 record), lagged wages will be NA.
+# We will evaluate only on "predictable" 2024 rows (with complete lagged wages).
+test_predictable <- test_df %>%
+  filter(!is.na(Mean_lag1), !is.na(Median_lag1), !is.na(Entry_lag1), !is.na(Exp_lag1))
+
+excluded_2024 <- nrow(test_df) - nrow(test_predictable)
+message("2024 rows excluded from evaluation (missing lagged wages): ", excluded_2024)
+
+# For training: 2015 rows will have NA lags. Drop them OR impute.
+# Here we DROP rows missing lag wages to keep the meaning of the predictors clean.
+train_df2 <- train_df %>%
+  filter(!is.na(Mean_lag1), !is.na(Median_lag1), !is.na(Entry_lag1), !is.na(Exp_lag1))
+
+# ---- 4) Recipe (Title not used; Code + Year + lagged wages) ----
+rec <- recipe(Employment ~ Code + Year + Mean_lag1 + Median_lag1 + Entry_lag1 + Exp_lag1,
+              data = train_df2) %>%
+  step_zv(all_predictors()) %>%
+  step_dummy(all_nominal_predictors()) %>%
+  step_normalize(all_numeric_predictors())
+
+# ---- 5) Cross-validation within training only (leave-one-year-out style) ----
+folds <- group_vfold_cv(train_df2, group = Year)
+
+metrics_used <- metric_set(rmse, mae, rsq)
+
+# ---- 6) Model set (multiple algorithms) ----
+models <- list(
+  linear_lm =
+    linear_reg() %>%
+    set_engine("lm") %>%
+    set_mode("regression"),
+  
+  ridge_glmnet =
+    linear_reg(penalty = tune(), mixture = 0) %>%
+    set_engine("glmnet") %>%
+    set_mode("regression"),
+  
+  lasso_glmnet =
+    linear_reg(penalty = tune(), mixture = 1) %>%
+    set_engine("glmnet") %>%
+    set_mode("regression"),
+  
+  xgboost =
+    boost_tree(
+      trees = 1200,
+      learn_rate = tune(),
+      tree_depth = tune(),
+      mtry = tune(),
+      min_n = tune(),
+      loss_reduction = tune()
+    ) %>%
+    set_engine("xgboost") %>%
+    set_mode("regression")
+)
+
+# ---- 7) Tuning grids (kept modest; expand later) ----
+
+grids <- list(
+  ridge_glmnet = grid_regular(penalty(), levels = 20),
+  lasso_glmnet = grid_regular(penalty(), levels = 20),
+
+  
+  xgboost = grid_latin_hypercube(
+    learn_rate(range = c(0.01, 0.3)),
+    tree_depth(range = c(2L, 10L)),
+    mtry(range = c(5L, 200L)),
+    min_n(range = c(2L, 40L)),
+    loss_reduction(),
+    size = 30
+  )
+)
+
+# ---- 8) Fit + tune helper ----
+fit_one <- function(spec, name) {
+  
+  wf <- workflow() %>%
+    add_recipe(rec) %>%
+    add_model(spec)
+  
+  if (name %in% names(grids)) {
+    tuned <- tune_grid(
+      wf,
+      resamples = folds,
+      grid = grids[[name]],
+      metrics = metrics_used
+    )
+    best <- select_best(tuned, metric = "rmse")
+    final_wf <- finalize_workflow(wf, best)
+    final_fit <- fit(final_wf, data = train_df2)
+    
+    list(name = name, tuned = tuned, workflow = final_wf, fit = final_fit)
+  } else {
+    res <- fit_resamples(
+      wf,
+      resamples = folds,
+      metrics = metrics_used
+    )
+    final_fit <- fit(wf, data = train_df2)
+    
+    list(name = name, resamples = res, workflow = wf, fit = final_fit)
+  }
+}
+
+# ---- 9) Train all models ----
+
+
+results <- purrr::imap(models, fit_one)
+
+
+# ---- 10) Evaluate on 2024 (predictable rows only) ----
+eval_on_test <- function(obj) {
+  preds <- predict(obj$fit, test_predictable) %>%
+    bind_cols(test_predictable %>% select(Code, Year, Employment))
+  
+  mets <- metrics_used(preds, truth = Employment, estimate = .pred) %>%
+    mutate(model = obj$name)
+  
+  list(metrics = mets, predictions = preds %>% mutate(model = obj$name))
+}
+
+test_outputs <- purrr::map(results, eval_on_test)
+
+test_metrics <- purrr::map_df(test_outputs, "metrics") %>%
+  select(model, .metric, .estimate) %>%
+  arrange(.metric, .estimate)
+
+test_predictions <- purrr::map_df(test_outputs, "predictions")
+
+print(test_metrics)
+
+# ---- 11) Best model by 2024 RMSE ----
+best <- test_metrics %>%
+  filter(.metric == "rmse") %>%
+  arrange(.estimate) %>%
+  dplyr::slice(1)
+
+print(best)
+
+best_fit <- results[[best$model]]$fit
