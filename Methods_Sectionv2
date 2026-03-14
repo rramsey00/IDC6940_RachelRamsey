@@ -1,0 +1,111 @@
+<html>
+
+<head>
+<title>Methods Section</title>
+</head>
+
+<body>
+
+<h1>Overview</h1><br>
+
+The methodology used for this analysis is designed to mimic the methodology used by the<br> Bureau of Labor Statistics to conduct Occupational Projections with the exception of the<br> models used. By changing the models used from statistical and econometric models to machine<br>
+learning models which are more focused on accuracy, this analysis can be used to identify<br> the model which would be an effective benchmark to further ensure the accuracy of the BLS<br> method’s projections. This version of the projections methodology covers the labor force<br> inputs, aggregate economy inputs, final demand proxy, and industry employment inputs used <br>in the BLS methodology. The limits of this analysis lead to a divergence from the BLS<br> methodology in that this analysis did not use paid multipliers from IMPLAN or RIMS II. <br>The further divergence of the type of models used is implemented in the Occupational<br> Employment block. By training on several years approaching 2024, and testing on 2024 data <br>we will be able to evaluate the prediction of the models against the actual employment<br> numbers since these have been published at the time of this analysis.<br>
+<br>
+<h1>2. Data Acquisition</h1><br>
+
+<h2>2.1 Scope of Data</h2><br>
+
+The data collected for this analysis is statewide data on Florida ranging from 2016 to 2024.<br> All data being collected is annual units on detailed occupations. The target variable in<br> this analysis is the occupational employment by industry for each year. This means we are<br> trying to predict the employment of a certain occupation within a certain industry. 2015<br> data is excluded because the BLS OEWS research estimates files do not have detailed<br> occupation groups for that year. The training data set is 2016-2023 and the test year is<br> 2024.<br>
+<br>
+<br>
+<h2>2.2 BLS Methodology</h2><br>
+
+<h3>2.2.1 Labor Force Inputs</h3><br>
+
+The features used in this analysis from the Labor Force Inputs block of the BLS<br> methodology include the Annual Averages of Civilian Noninstitutional Population 16 years<br> and older (CNP) (Series ID: LAUST120000000000009), Labor Force Participation Rate (LFPR)<br> (Series ID: LAUST120000000006), and Total Labor Force Level (Series ID: LAUST120000000008).<br> These inputs are necessary to get the context of the labor force and a clear picture<br> of the supply for the labor force as well as an idea of how likely that supply is to<br> grow. The features come from the BLS’ own Local Area Unemployment Statistics survey (LAUS)<br> using period M13.<br>
+
+<br>
+<h3>2.2.2 Aggregate Economy</h3><br>
+
+The features used in this analysis from the Aggregate Economy block of the BLS <br>methodology include the Real and Nominal Gross State Products, State Personal <br>Consumption Expenditures, Government GDP by Industry, Construction GDP as an Investment<br> Proxy, and the GDP Implicit Price Deflator. These inputs are a collection of economic<br> indicators as well as industry-level detail indicators that are used in the estimation<br> process for industry-level employment projections. All of the features included in this<br> block come from the Bureau of Economic Analysis (BEA). <br>
+<br>
+These features were retrieved using the bea.R package to access the BEA API. The features<br> are retrieved from the Regional dataset: SAGDP2 for nominal GDP by industry, SAGDP9 for<br> real GDP by industry, SAPCE1 for PCE, SAIMC4 for total employment, and Table T10109 <br>from the NIPA dataset for the GDP deflator.<br>
+
+<br>
+<h3>2.2.3 Final Demand</h3><br>
+
+BLS uses multipliers purchased from IMPLAN or BEA (RIMS II), however because of the<br> limitations on this analysis, the feature used to bridge the gap as a proxy for demand <br>across NAICS industries is the previously mentioned real and nominal GDP by industry<br> collected from the BEA.<br>
+<br>
+<h3>2.2.4 Industry Employment</h3><br>
+
+The features used in this analysis from the Industry Employment block of the BLS<br> methodology include employment and wages by industry, total employment including<br> proprietors, and the national average weekly hours worked by industry. These features <br>are included in this block to act as a benchmark for the sum of the predicted employment<br> by occupation and industry. Industry level employment and wages come from the BLS’<br> Quarterly Census of Employment and Wages (QCEW), the total employment including <br>proprietors is coming from the BEA, and the national average weekly hours worked by<br> industry is coming from the BLS’ Current Employment Statistics (CES).<br>
+<br>
+All data in this section is retrieved through the BLS API. QCEW data is annual averages<br> filtered to the private sector and 4-digit NAICS codes. The CES weekly hours are retrieved<br> at the supersector level.<br>
+
+<br>
+<br>
+<h1>3. Models Evaluated</h1><br>
+
+<h2>3.1 Models</h2><br>
+
+Each model uses the same features. The goal is to compare their results against each other<br> and against BLS’ projections when compared to the actual employment numbers for 2024.<br>
+<br>
+<h3>3.1.1 OLS</h3><br>
+
+This is used as a baseline model to mimic the current BLS approach of using traditional<br> regression methods. The results of this model will be compared to more complex models.<br>
+<br>
+<h3>3.1.2 Ridge and Lasso Regression</h3><br>
+
+These models share a penalty logic which decreases the coefficients to account for<br> correlated predictors. Lasso regression can decrease coefficient down to zero to remove <br>less useful predictors.<br>
+<br>
+<h3>3.1.3 XGBoost</h3><br>
+
+This model captures nonlinear relationships. It sequentially builds decision trees<br> which correct the errors of the previous trees. The hyperparameters for this model are tuned <br>using cross-validation using a latin hypercube grid of 30 combinations.<br>
+<br>
+<h2>3.2 Evaluation Metrics</h2><br>
+
+The metrics are used to evaluate the held out 2024 data set and then also applied to <br>the BLS projections.<br>
+<br>
+<h3>3.2.1 RMSE</h3><br>
+
+This is the primary metric used to select the best model. It applies a heavy penalty to <br>large errors.<br>
+<br>
+<h3>3.2.2 MAE</h3><br>
+
+This is the average of the differences between the predicted and actual values with<br> number of jobs as the unit.<br>
+<br>
+<h3>3.2.3 R²</h3><br>
+
+This is the proportion of the variance explained by the model.<br>
+<br>
+<br>
+<h1>4. Tools</h1><br>
+
+<h2>4.1 Data Retrieval</h2><br>
+
+The data for this analysis was retrieved through manual downloads from the Bureau of<br> Labor Statistics, Bureau of Economic Analysis, and U.S. Census Bureau websites.<br>
+<br>
+<h2>4.2 Data Processing</h2><br>
+
+The R programming language in RStudio is being used for this analysis. For data cleaning <br>and reshaping to merge data files, I am using the tidyverse package for R. The httr and<br> jsonlite packages are being used to pull data through APIs. The readxl package is being <br>used to pull the OEWS Research Estimates files from a local drive.<br>
+<br>
+<h2>4.3 Modeling</h2><br>
+
+For the OLS model, the function being used is the base R function “lm”. The function <br>being used for both the Ridge and Lasso regression models is “glmnet” called via tidymodels.<br> Finally, the function used for the XGBoost model is “xgboost” also called via<br> tidymodels.<br>
+<br>
+<h2>4.4 Cross-Validation</h2><br>
+
+The data is split by group_vfold_cv grouped by Year. This method was chosen because the <br>data is structured by occupation and year. Having the same occupation in adjacent years <br>on both sides of the split creates leakage through serial correlation. Holding out entire<br> years at a time ensures the model is evaluated on a year not already included in the model.<br>
+<br>
+<h2>4.5 Evaluation Metrics</h2><br>
+
+The evaluation metrics included in this analysis are RMSE, MAE, R² via tidymodels<br> metric_set. These evaluation metrics are applied to the held-out 2024 test data set.<br>
+<br>
+<h2>4.6 Parallelization</h2><br>
+
+The future package is used for parallel processing during hyperparameter tuning to<br> reduce computation time.<br>
+<br>
+
+
+</body>
+</html>
